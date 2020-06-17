@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notebook.entity.Note
 
@@ -47,16 +46,6 @@ class NoteAdapter(noteViewEventHandler: NoteViewEventHandler)
             descriptionTv?.setText(note.note+"")
             deleteIv?.setOnClickListener { noteViewEventHandler.onDeleteClicked(note) }
             editIv?.setOnClickListener { noteViewEventHandler.onEditClicked(note) }
-//            deleteIv.setOnClickListener(object : View.OnClickListener {
-//                open fun onClick(v: View) {
-//                    noteViewEventCallback.onDeleteClicked(note)
-//                }
-//            })
-//            editIv.setOnClickListener(object : View.OnClickListener {
-//                open fun onClick(v: View) {
-//                    noteViewEventCallback.onEditClicked(note)
-//                }
-//            })
         }
     }
     fun addNotes(noteList:ArrayList<Note>){
