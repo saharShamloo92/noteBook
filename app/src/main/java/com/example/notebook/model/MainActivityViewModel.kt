@@ -2,7 +2,6 @@ package com.example.notebook.model
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.notebook.databae.NoteRepository
 import com.example.notebook.entity.Note
@@ -11,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel (application:Application):AndroidViewModel(application){
-    val noteRepository: NoteRepository
+    private val noteRepository: NoteRepository
     init {
         noteRepository= NoteRepository(application)
     }
@@ -21,7 +20,7 @@ class MainActivityViewModel (application:Application):AndroidViewModel(applicati
         coroutine.launch { noteRepository.insertNote(note) }
     }
     fun getNotes():MutableLiveData<List<Note>>{
-        var noteList=MutableLiveData<List<Note>>()
+        val noteList=MutableLiveData<List<Note>>()
 
         coroutine.launch {
             val noteFromR =noteRepository.getNotes()

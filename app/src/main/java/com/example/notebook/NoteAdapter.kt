@@ -9,12 +9,28 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notebook.entity.Note
 
-class NoteAdapter(noteViewEventHandler: NoteViewEventHandler)
+class NoteAdapter(val noteViewEventHandler: NoteViewEventHandler)
     : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
-    var noteList= arrayListOf<Note>()
-    val noteViewEventHandler=noteViewEventHandler
-
+    private var noteList= arrayListOf<Note>()
+    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private var titleTv: TextView? = null
+        private var descriptionTv: TextView? = null
+        private var deleteIv: ImageView? = null
+        private var editIv: ImageView? = null
+        init {
+            titleTv=itemView.findViewById(R.id.tv_item_title)
+            descriptionTv=itemView.findViewById(R.id.tv_item_note)
+            deleteIv=itemView.findViewById(R.id.iv_item_delete)
+            editIv=itemView.findViewById(R.id.iv_item_edit)
+        }
+        fun bindNote(note:Note){
+            titleTv?.text = note.title
+            descriptionTv?.text = note.note
+            deleteIv?.setOnClickListener { noteViewEventHandler.onDeleteClicked(note) }
+            editIv?.setOnClickListener { noteViewEventHandler.onEditClicked(note) }
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_row, parent, false)
         return NoteViewHolder(itemView)
@@ -30,24 +46,7 @@ class NoteAdapter(noteViewEventHandler: NoteViewEventHandler)
         holder.bindNote(note)
     }
 
-    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var titleTv: TextView? = null
-        private var descriptionTv: TextView? = null
-        private var deleteIv: ImageView? = null
-        private var editIv: ImageView? = null
-        init {
-            titleTv=itemView.findViewById(R.id.tv_item_title)
-            descriptionTv=itemView.findViewById(R.id.tv_item_note)
-            deleteIv=itemView.findViewById(R.id.iv_item_delete)
-            editIv=itemView.findViewById(R.id.iv_item_edit)
-        }
-        fun bindNote(note:Note){
-            titleTv?.setText(note.title+"")
-            descriptionTv?.setText(note.note+"")
-            deleteIv?.setOnClickListener { noteViewEventHandler.onDeleteClicked(note) }
-            editIv?.setOnClickListener { noteViewEventHandler.onEditClicked(note) }
-        }
-    }
+
     fun addNotes(noteList:ArrayList<Note>){
         this.noteList=noteList
         notifyDataSetChanged()

@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -13,21 +12,17 @@ import androidx.fragment.app.DialogFragment
 import com.example.notebook.entity.Note
 
 class CustomDialog(context: Context) : DialogFragment() {
-    val context2: Context = context
+   private val context2: Context = context
     private var resultCallback: ResultCallback? = null
     var note: Note = Note()
-
-    init {
-    }
-
-    private val KEYNOTE = "key"
+    private val KEY = "key"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
 
             arguments.let {
-                note = it?.getParcelable(KEYNOTE)!!
+                note = it?.getParcelable(KEY)!!
             }
 
         }
@@ -39,32 +34,32 @@ class CustomDialog(context: Context) : DialogFragment() {
         val viewDialog = LayoutInflater.from(context2).inflate(R.layout.edit_dialog, null)
 
         builder.setView(viewDialog)
-        val btn_dialog_save: Button = viewDialog.findViewById(R.id.btn_dialog_save)
-        val et_dialog_title: EditText = viewDialog.findViewById(R.id.et_dialog_title)
-        val et_dialog_note: EditText = viewDialog.findViewById(R.id.et_dialog_note)
-        val btn_dialog_cancel: Button = viewDialog.findViewById(R.id.btn_dialog_cancel)
+        val btnDialogSave: Button = viewDialog.findViewById(R.id.btn_dialog_save)
+        val etDialogTitle: EditText = viewDialog.findViewById(R.id.et_dialog_title)
+        val etDialogNote: EditText = viewDialog.findViewById(R.id.et_dialog_note)
+        val btnDialogCancel: Button = viewDialog.findViewById(R.id.btn_dialog_cancel)
 
-        if (note != null) {
-            et_dialog_title.setText(note.title)
-            et_dialog_note.setText(note.note)
+        if (note.title.isNotBlank() || note.title.isNotEmpty()) {
+            etDialogTitle.setText(note.title)
+            etDialogNote.setText(note.note)
         }
-        btn_dialog_save.setOnClickListener {
+        btnDialogSave.setOnClickListener {
 
-            if (!(et_dialog_title.text.toString().trim().length > 0))
-                et_dialog_title.error = "fill title"
-            else if (!(et_dialog_note.text.toString().trim().length > 0))
-                et_dialog_note.error = "fill description"
+            if (etDialogTitle.text.toString().trim().isEmpty())
+                etDialogTitle.error = "fill title"
+            else if (etDialogNote.text.toString().trim().isEmpty())
+                etDialogNote.error = "fill description"
             else {
 
-                note.title = et_dialog_title.text.toString().trim()
-                note.note = et_dialog_note.text.toString().trim()
+                note.title = etDialogTitle.text.toString().trim()
+                note.note = etDialogNote.text.toString().trim()
                 resultCallback?.onSave(note)
                 dismiss()
             }
 
         }
 
-        btn_dialog_cancel.setOnClickListener {
+        btnDialogCancel.setOnClickListener {
             dialog?.dismiss()
         }
 
@@ -81,8 +76,8 @@ class CustomDialog(context: Context) : DialogFragment() {
 
     fun newInstance(note: Note): CustomDialog {
         val bundle = Bundle()
-        bundle.putParcelable(KEYNOTE, note as Parcelable)
-        val fragment: CustomDialog = CustomDialog(context2)
+        bundle.putParcelable(KEY, note as Parcelable)
+        val fragment = CustomDialog(context2)
         fragment.arguments = bundle
         return fragment
     }

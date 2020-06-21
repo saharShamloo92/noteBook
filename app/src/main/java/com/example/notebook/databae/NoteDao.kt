@@ -1,8 +1,5 @@
 package com.example.notebook.databae
 
-import android.provider.ContactsContract
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import com.example.notebook.entity.Note
 

@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.notebook.databinding.ActivityMainBinding
 import com.example.notebook.entity.Note
 import com.example.notebook.model.MainActivityViewModel
-import java.lang.reflect.Array.newInstance
-import javax.xml.datatype.DatatypeFactory.newInstance
 
 class MainActivity : AppCompatActivity(), NoteViewEventHandler {
 
@@ -65,7 +63,7 @@ class MainActivity : AppCompatActivity(), NoteViewEventHandler {
 
     override fun onEditClicked(note: Note) {
         val editDialog: CustomDialog = CustomDialog(this).newInstance(note)
-        editDialog.setCancelable(true)
+        editDialog.isCancelable = true
         editDialog.setResultCallback(object : CustomDialog.ResultCallback{
             override fun onSave(note: Note) {
                 viewModel.updateNote(note)
@@ -77,14 +75,14 @@ class MainActivity : AppCompatActivity(), NoteViewEventHandler {
 
     override fun getItemCount(count: Int) {
         if (count > 0) {
-            mainBinding.llEmtystate.setVisibility(View.GONE)
+            mainBinding.llEmtystate.visibility = View.GONE
         } else {
-            mainBinding.llEmtystate.setVisibility(View.VISIBLE)
+            mainBinding.llEmtystate.visibility = View.VISIBLE
         }
-        if (mainBinding.llEmtystate.getVisibility() == View.VISIBLE) {
-            mainBinding.ivActionbtn.setVisibility(View.GONE)
+        if (mainBinding.llEmtystate.visibility == View.VISIBLE) {
+            mainBinding.ivActionbtn.visibility = View.GONE
         } else {
-            mainBinding.ivActionbtn.setVisibility(View.VISIBLE)
+            mainBinding.ivActionbtn.visibility=View.VISIBLE
         }
     }
 }
